@@ -1,7 +1,7 @@
 # Steps to Use the Back-End
 
 ## Install Dependencies
-This backend was made with python - 3.11.7 . To Install the Required Dependencies run the following command with this folder as root
+This backend was made with `python - 3.11.7` . To Install the Required Dependencies run the following command with this folder as root
 ```bash
 pip install -r requirements.txt
 ```
