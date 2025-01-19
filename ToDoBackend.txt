@@ -1,0 +1,2 @@
+- Add a model to classify plant based on the leaf automatically
+- Add more Vegetables
