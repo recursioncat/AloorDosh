@@ -1,40 +1,41 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from tensorflow import keras
-from dependencies import processImage
+from dependencies import *
 import numpy as np
 import pickle
 
 app = Flask(__name__)
 
+@app.route('/classifyUnknown')
+def classify():
+    model = keras.models.load_model('Models/Classifier.keras')
+    possiblePredictions = ['Potato', 'Tomato']
+    
+    data = request.get_json(force = True)
+    url = data['url']
+    
+    image = processImage(url, 128)
+    prediction = possiblePredictions[np.argmax(model.predict(image))]
+
+    # print('predict'+prediction)
+    veggie = globals().get('predict'+prediction)
+
+    result = {'vegType': prediction, 'disease': veggie(url)}
+    return jsonify(result)
+
+
 
 @app.route('/potato')
 def potato():
-    model = keras.models.load_model('Models/Potatoes.keras')
     data = request.get_json(force = True)
     url = data['url']
-    
-    image = processImage(url, 128)
-    prediction = model.predict(image)
-    
-    with open('Labels/otato.label', 'rb') as file:
-        labels = pickle.load(file)
-    
-    return str(labels[np.argmax(prediction)])
-    
+    return predictPotato(url)
     
 @app.route('/tomato')
 def tomato():
-    model = keras.models.load_model('Models/Tomato.keras')
     data = request.get_json(force = True)
     url = data['url']
-    
-    image = processImage(url, 128)
-    prediction = model.predict(image)
-    
-    with open('Labels/tomato.label', 'rb') as file:
-        labels = pickle.load(file)
-    
-    return str(labels[np.argmax(prediction)])
+    return predictTomato(url)
     
 
 if __name__ == '__main__':

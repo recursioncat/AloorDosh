@@ -1,2 +1,2 @@
-- Add a model to classify plant based on the leaf automatically
-- Add more Vegetables
+- Make multiple vegetable classification more efficient. Read functions and models from a file, instead of relying on global()
+- Add More Vegetables
