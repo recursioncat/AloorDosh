@@ -8,19 +8,27 @@ CORS(app)
 
 @app.route('/dummyPred', methods=['POST'])
 def DumPred():
+
+    print(request.files)
+
     if 'image' not in request.files:
+
+        print("No Image Uploaded")
         return(jsonify({'error':'No image uploaded'}), 400)
     file = request.files['image']
 
     try:
         image = Image.open(file.stream)
+        # image.save('some.png')
 
         return jsonify({
             "Plant": "Tomato",
             "Disease": "Healthy",
             "Prediction": "98%"
         })
+    
     except Exception as e:
+        print("Second Exception")
         return(jsonify({"error":f"Error Reading Image ({str(e)})"}), 400)
     
 
